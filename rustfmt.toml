@@ -1,7 +1,0 @@
-[general]
-# Ensure that functions are formatted with a newline before the opening brace
-fn_brace_style = "SameLineWhere"
-
-[style]
-# Use a compact style for closures
-fn_call_style = "Visual"
