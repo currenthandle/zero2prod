@@ -23,6 +23,7 @@ tracing-log = "0.2"
 # tracing-bunyan-formatter = "0.3.1"
 # tracing-log = "0.2.0"
 # tracing-actix-web = "0.7"
+secrecy = { version = "0.8", features = ["serde"] }
 serde = { version = "1", features = ["derive"] }
 sqlx = { version = "0.8", default-features = false, features = [
   "runtime-tokio-rustls",
