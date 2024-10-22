@@ -5,7 +5,7 @@ services:
     dockerfile_path: Dockerfile
     source_dir: .
     github:
-      branch: chapter-5
+      branch: main
       deploy_on_push: true
       repo: currenthandle/zero2prod
     health_check:
