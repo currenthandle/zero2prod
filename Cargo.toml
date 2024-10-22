@@ -26,6 +26,7 @@ tracing-actix-web = "0.7"
 # tracing-actix-web = "0.7"
 secrecy = { version = "0.8", features = ["serde"] }
 serde = { version = "1", features = ["derive"] }
+serde-aux = "4"
 sqlx = { version = "0.8", default-features = false, features = [
   "runtime-tokio-rustls",
   "macros",
