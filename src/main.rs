@@ -2,7 +2,7 @@ use secrecy::ExposeSecret;
 use zero2prod::configuration::get_configuration;
 use zero2prod::startup::run;
 use zero2prod::telemetry::{get_subscriber, init_subscriber};
-use sqlx::postgres::PgPool;
+use sqlx::postgres::{PgPool, PgPoolOptions};
 use std::net::TcpListener;
 
 #[tokio::main]
@@ -12,8 +12,7 @@ async fn main() -> Result<(), std::io::Error> {
 
     let configuration = get_configuration().expect("Failed to read configuration.");
     let connection_pool =
-        PgPool::connect_lazy(&configuration.database.connection_string().expose_secret())
-            .expect("Failed to connect to Postgres.");
+        PgPoolOptions::new().connect_lazy_with(configuration.database.connect_options());
 
     let address = format!(
         "{}:{}",
