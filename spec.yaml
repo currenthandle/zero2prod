@@ -1,5 +1,5 @@
 name: zero2prod
-region: sfo3
+region: fra
 services:
   - name: zero2prod
     # Relative to the repository root
