@@ -51,6 +51,12 @@ jobs:
           toolchain: 1.82.0  # Ensure the toolchain matches your local version
           components: rustfmt
 
+      - name: Log Rust version
+        run: rustc --version
+
+      - name: Log rustup toolchain info
+        run: rustup show
+
       - name: Install sqlx-cli
         run:
           cargo install sqlx-cli
