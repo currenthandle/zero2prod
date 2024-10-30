@@ -47,6 +47,9 @@ jobs:
       # It also takes care of caching intermediate build artifacts.
       - name: Install the Rust toolchain
         uses: actions-rust-lang/setup-rust-toolchain@v1
+        with:
+          toolchain: stable-1.82.0  # Ensure the toolchain matches your local version
+          components: rustfmt
 
       - name: Install sqlx-cli
         run:
