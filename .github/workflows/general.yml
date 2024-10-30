@@ -111,6 +111,9 @@ jobs:
       - name: Log Cagro version
         run: cargo --version
 
+      - name: Log rustfmt version
+        run: rustfmt --version
+
       - name: Log rustup toolchain info
         run: rustup show
 
