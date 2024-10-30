@@ -1,6 +1,7 @@
 use secrecy::{ExposeSecret, Secret};
 use serde_aux::field_attributes::deserialize_number_from_string;
 use sqlx::postgres::{PgConnectOptions, PgSslMode};
+// use std::convert::{TryFrom, TryInto};
 
 #[derive(serde::Deserialize)]
 pub struct Settings {
@@ -53,12 +54,12 @@ pub fn get_configuration() -> Result<Settings, config::ConfigError> {
         .expect("Failed to parse APP_ENVIRONMENT");
     let enviroment_filename = format!("{}.yaml", environment.as_str());
     let settings = config::Config::builder()
-        .add_source(config::File::from(config::File::from(
+        .add_source(config::File::from(
             configuration_directory.join("base.yaml"),
-        )))
-        .add_source(config::File::from(config::File::from(
+        ))
+        .add_source(config::File::from(
             configuration_directory.join(enviroment_filename),
-        )))
+        ))
         .add_source(
             config::Environment::with_prefix("app")
                 .prefix_separator("_")
