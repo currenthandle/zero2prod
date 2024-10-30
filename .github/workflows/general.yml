@@ -57,6 +57,9 @@ jobs:
       - name: Log rustup toolchain info
         run: rustup show
 
+      - name: Log Cagro version
+        run: cargo --version
+
       - name: Install sqlx-cli
         run:
           cargo install sqlx-cli
