@@ -101,6 +101,13 @@ jobs:
         with:
           toolchain: 1.82.0
           components: rustfmt
+
+      - name: Log Rust version
+        run: rustc --version
+
+      - name: Log rustup toolchain info
+        run: rustup show
+
       - name: Apply formatting
         run: cargo fmt
       - name: Enforce formatting
