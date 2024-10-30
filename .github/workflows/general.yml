@@ -95,6 +95,8 @@ jobs:
         with:
           toolchain: 1.82.0
           components: rustfmt
+      - name: Apply formatting
+        run: cargo fmt
       - name: Enforce formatting
         run: cargo fmt --check
 
