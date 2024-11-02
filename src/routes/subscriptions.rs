@@ -2,14 +2,23 @@ use actix_web::{web, HttpResponse};
 use sqlx::PgPool;
 use chrono::Utc;
 use uuid::Uuid;
-use unicode_segmentation::UnicodeSegmentation;
-
+use std::convert::{TryFrom, TryInto};
 use crate::domain::{NewSubscriber, SubscriberEmail, SubscriberName};
 
 #[derive(serde::Deserialize)]
 pub struct FormData {
     email: String,
     name: String,
+}
+
+impl TryFrom<FormData> for NewSubscriber {
+    type Error = String;
+
+    fn try_from(value: FormData) -> Result<Self, Self::Error> {
+        let name = SubscriberName::parse(value.name)?;
+        let email = SubscriberEmail::parse(value.email)?;
+        Ok(Self { email, name })
+    }
 }
 
 #[allow(clippy::async_yields_async)]
@@ -22,31 +31,14 @@ pub struct FormData {
     )
 )]
 pub async fn subscribe(form: web::Form<FormData>, pool: web::Data<PgPool>) -> HttpResponse {
-    let name = match SubscriberName::parse(form.0.name) {
-        Ok(name) => name,
+    let new_subscriber = match form.0.try_into() {
+        Ok(form) => form,
         Err(_) => return HttpResponse::BadRequest().finish(),
     };
-    let email = match SubscriberEmail::parse(form.0.email) {
-        Ok(email) => email,
-        Err(_) => return HttpResponse::BadRequest().finish(),
-    };
-    let new_subscriber = NewSubscriber { email, name };
     match insert_subscriber(&pool, &new_subscriber).await {
         Ok(_) => HttpResponse::Ok().finish(),
         Err(_) => HttpResponse::InternalServerError().finish(),
     }
-}
-
-pub fn is_valid_name(s: &str) -> bool {
-    let is_empty_or_whitespace = s.trim().is_empty();
-
-    let is_too_long = s.graphemes(true).count() > 256;
-
-    let forbidden_characters = ['/', '(', ')', '<', '>', '\\', '{', '}'];
-
-    let contains_forbidden_characters = s.chars().any(|g| forbidden_characters.contains(&g));
-
-    !(is_empty_or_whitespace || is_too_long || contains_forbidden_characters)
 }
 
 #[tracing::instrument(
