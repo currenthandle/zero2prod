@@ -38,6 +38,7 @@ sqlx = { version = "0.8", default-features = false, features = [
 ] }
 unicode-segmentation = "1"
 uuid = { version = "1", features = ["v4"] }
+validator = "0.18"
 
 
 [dev-dependencies]
