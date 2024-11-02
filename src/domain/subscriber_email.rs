@@ -1,6 +1,8 @@
-#[derive(Debug)]
+use validator::ValidateEmail;
 
+#[derive(Debug)]
 pub struct SubscriberEmail(String);
+
 impl SubscriberEmail {
     pub fn parse(s: String) -> Result<SubscriberEmail, String> {
         if s.validate_email() {
@@ -24,8 +26,8 @@ mod test {
 
     #[test]
     fn empty_string_is_rejected() {
-        let email = "".to_str();
-        assert_err!(SubscribeEmail::parse(email));
+        let email = "".to_string();
+        assert_err!(SubscriberEmail::parse(email));
     }
 
     #[test]
