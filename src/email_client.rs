@@ -67,7 +67,6 @@ struct SendEmailRequest<'a> {
 #[cfg(test)]
 mod tests {
     use secrecy::Secret;
-    use tracing::subscriber;
     use crate::domain::SubscriberEmail;
     use crate::email_client::EmailClient;
     use fake::faker::internet::en::SafeEmail;
