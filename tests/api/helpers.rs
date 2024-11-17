@@ -11,6 +11,7 @@ pub struct TestApp {
     pub address: String,
     pub db_pool: PgPool,
     pub email_server: MockServer,
+    pub port: u16,
 }
 impl TestApp {
     pub async fn post_subscriptions(&self, body: String) -> reqwest::Response {
@@ -56,12 +57,14 @@ pub async fn spawn_app() -> TestApp {
         .await
         .expect("Failed to build application.");
 
-    let address = format!("http://127.0.0.1:{}", application.port());
+    // let address = format!("http://127.0.0.1:{}", application.port());
 
+    let application_port = application.port();
     let _ = tokio::spawn(application.run_until_stopped());
 
     TestApp {
-        address,
+        address: format!("http://localhost:{}", application_port),
+        port: application_port,
         db_pool: get_connection_pool(&configuration.database),
         email_server,
     }
