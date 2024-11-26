@@ -97,7 +97,6 @@ pub async fn subscribe(
         .commit()
         .await
         .context("Failed to commit SQL transaction to store a new subscriber.")?;
-
     send_confirmation_email(
         &email_client,
         new_subscriber,
@@ -167,10 +166,7 @@ pub async fn insert_subscriber(
         Utc::now()
     );
 
-    transaction.execute(query).await.map_err(|e| {
-        tracing::error!("Failed to execute query: {:?}", e);
-        e
-    })?;
+    transaction.execute(query).await?;
     Ok(subscriber_id)
 }
 
@@ -189,11 +185,7 @@ pub async fn store_token(
         subscription_token,
         subscriber_id
     );
-    transaction.execute(query).await.map_err(|e| {
-        tracing::error!("Failed to execute query: {:?}", e);
-        // Wrapping the underlying error
-        StoreTokenError(e)
-    })?;
+    transaction.execute(query).await.map_err(StoreTokenError)?;
     Ok(())
 }
 // impl std::fmt::Display for SubscribeError {
